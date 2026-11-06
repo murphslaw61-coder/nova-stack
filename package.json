@@ -1,0 +1,59 @@
+{
+  "name": "nova-stack",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "expo start --dev-client",
+    "start:go": "expo start",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "test": "jest",
+    "preflight": "node scripts/preflight.js",
+    "gen:puzzles": "node scripts/generate-puzzles.mjs",
+    "gen:sounds": "python3 scripts/generate_sounds.py",
+    "build:android": "eas build --platform android --profile production",
+    "build:ios": "eas build --platform ios --profile production",
+    "submit:android": "eas submit --platform android",
+    "submit:ios": "eas submit --platform ios"
+  },
+  "dependencies": {
+    "@expo-google-fonts/exo-2": "^0.4.2",
+    "@expo-google-fonts/orbitron": "^0.4.2",
+    "@expo/metro-runtime": "~58.0.17",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "expo": "~58.0.23",
+    "expo-asset": "~58.0.20",
+    "expo-audio": "~58.0.11",
+    "expo-constants": "~58.0.15",
+    "expo-dev-client": "~58.0.18",
+    "expo-font": "~58.0.11",
+    "expo-haptics": "~58.0.7",
+    "expo-linear-gradient": "~58.0.3",
+    "expo-splash-screen": "~58.0.13",
+    "expo-status-bar": "~58.0.4",
+    "expo-tracking-transparency": "~58.0.2",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-google-mobile-ads": "^17.4.0",
+    "react-native-purchases": "^11.0.1",
+    "react-native-safe-area-context": "~5.11.1",
+    "react-native-svg": "15.16.0",
+    "react-native-web": "^0.21.4"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    },
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "devDependencies": {
+    "babel-jest": "^30.5.2",
+    "jest": "^30.5.2"
+  }
+}
