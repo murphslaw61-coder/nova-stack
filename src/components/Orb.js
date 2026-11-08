@@ -4,6 +4,7 @@
 import React, { memo, useEffect, useRef } from 'react';
 import { Animated, Easing, Text, StyleSheet, View } from 'react-native';
 import Planet from './Planet';
+import TierBadge from './TierBadge';
 import { FONTS } from '../game/constants';
 
 function Orb({ id, v, r, c, m, cell, gap, dur, skin, showNumber, spawnR }) {
@@ -68,9 +69,7 @@ function Orb({ id, v, r, c, m, cell, gap, dur, skin, showNumber, spawnR }) {
         </View>
       </Animated.View>
       {showNumber && v < 8 && v !== 9 && (
-        <View style={[styles.badge, { right: cell * 0.02, bottom: cell * 0.02 }]}>
-          <Text style={styles.badgeText}>{v}</Text>
-        </View>
+        <TierBadge tier={v} inset={cell * 0.02} />
       )}
     </Animated.View>
   );
@@ -78,12 +77,6 @@ function Orb({ id, v, r, c, m, cell, gap, dur, skin, showNumber, spawnR }) {
 
 const styles = StyleSheet.create({
   wrap: { position: 'absolute', left: 0, top: 0 },
-  badge: {
-    position: 'absolute', minWidth: 15, height: 15, borderRadius: 8, paddingHorizontal: 3,
-    backgroundColor: 'rgba(6,8,20,0.78)', borderWidth: 1, borderColor: 'rgba(255,255,255,0.25)',
-    alignItems: 'center', justifyContent: 'center',
-  },
-  badgeText: { color: '#fff', fontSize: 9, fontFamily: FONTS.bodyBlack, lineHeight: 11 },
 });
 
 export default memo(Orb);
