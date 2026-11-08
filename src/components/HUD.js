@@ -29,7 +29,10 @@ export const ScoreBlock = memo(function ScoreBlock({ score, best, label = 'Score
   );
 });
 
-export const NextQueue = memo(function NextQueue({ queue, skin }) {
+// Takes the two tiers as plain numbers: the engine mutates its queue array in
+// place, so passing the array itself would let memo() skip every update.
+export const NextQueue = memo(function NextQueue({ next, then, skin }) {
+  const queue = [next, then];
   const pop = useRef(new Animated.Value(1)).current;
   useEffect(() => {
     pop.setValue(0.6);

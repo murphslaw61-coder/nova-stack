@@ -249,7 +249,7 @@ export default function GameScreen({ launch, onHome, onOpenShop, toast }) {
         ) : (
           <ScoreBlock score={v.score} best={best} />
         )}
-        <NextQueue queue={s.queue} skin={profile.skin} />
+        <NextQueue next={s.queue[0]} then={s.queue[1]} skin={profile.skin} />
       </View>
 
       <View style={{ paddingHorizontal: 14, marginBottom: 8 }}>
