@@ -2,7 +2,7 @@
 // two feature colours (craters, continents, bands…), rim light and glow.
 const cosmic = {
   1: { light: '#B9B2A6', mid: '#7D766C', dark: '#3F3A34', f1: '#5E584F', f2: '#CFC8BC', rim: '#E8E2D6', glow: null },
-  2: { light: '#FFFFFF', mid: '#CFD3DC', dark: '#6F7584', f1: '#A9AEBB', f2: '#E9ECF2', rim: '#FFFFFF', glow: null },
+  2: { light: '#F4FAFF', mid: '#A9C8EE', dark: '#3E5A86', f1: '#7F9CC6', f2: '#E2EEFF', rim: '#FFFFFF', glow: null },
   3: { light: '#F1C79A', mid: '#B5835A', dark: '#5A3A22', f1: '#8C603E', f2: '#E0B285', rim: '#FFE1C2', glow: null },
   4: { light: '#FF9F75', mid: '#D2512A', dark: '#6B1F0E', f1: '#A33A1C', f2: '#FFFFFF', rim: '#FFB28F', glow: null },
   5: { light: '#7FD3FF', mid: '#2477C8', dark: '#0B2A5E', f1: '#3FBF6A', f2: '#FFFFFF', rim: '#A8F0FF', glow: '#4FC3FF' },

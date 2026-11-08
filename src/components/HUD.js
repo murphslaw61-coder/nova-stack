@@ -2,6 +2,7 @@ import React, { memo, useEffect, useRef } from 'react';
 import { Animated, Easing, StyleSheet, Text, View } from 'react-native';
 import Planet from './Planet';
 import { T, formatScore } from './ui';
+import { skinById } from '../game/skins';
 import { COLORS, FONTS } from '../game/constants';
 
 export const ScoreBlock = memo(function ScoreBlock({ score, best, label = 'Score' }) {
@@ -37,17 +38,32 @@ export const NextQueue = memo(function NextQueue({ queue, skin }) {
   return (
     <View style={styles.next} accessibilityLabel={`Next orb tier ${queue[0]}, then tier ${queue[1]}`}>
       <T kind="label" style={{ marginBottom: 2 }}>Next</T>
-      <View style={{ flexDirection: 'row', alignItems: 'flex-end', gap: 4 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
         <Animated.View style={{ transform: [{ scale: pop }] }}>
-          <Planet tier={queue[0]} size={40} skinId={skin} />
+          <QueuePlanet tier={queue[0]} size={48} skin={skin} />
         </Animated.View>
-        <View style={{ opacity: 0.55, marginBottom: 2 }}>
-          <Planet tier={queue[1]} size={24} skinId={skin} />
-        </View>
+        <QueuePlanet tier={queue[1]} size={34} skin={skin} />
       </View>
     </View>
   );
 });
+
+// A planet in full colour with its tier number centred on it, inside a ring
+// tinted with that tier's colour so consecutive pieces are easy to tell apart.
+function QueuePlanet({ tier, size, skin }) {
+  const pal = skinById(skin).palette[tier] || {};
+  const ring = pal.glow || pal.mid || COLORS.stroke;
+  return (
+    <View style={[styles.qp, { width: size + 6, height: size + 6, borderRadius: (size + 6) / 2, borderColor: ring }]}>
+      <Planet tier={tier} size={size} skinId={skin} />
+      <View style={StyleSheet.absoluteFill} pointerEvents="none">
+        <View style={styles.qpCenter}>
+          <Text style={[styles.qpNum, { fontSize: size * 0.42 }]}>{tier}</Text>
+        </View>
+      </View>
+    </View>
+  );
+}
 
 export const FlipMeter = memo(function FlipMeter({ remaining, flipEvery, gravity, locked, showerIn }) {
   const spin = useRef(new Animated.Value(gravity === 'down' ? 0 : 1)).current;
@@ -99,7 +115,13 @@ const styles = StyleSheet.create({
   scoreBlock: { alignItems: 'center', flex: 1 },
   score: { fontFamily: FONTS.display, fontSize: 30, color: COLORS.text, letterSpacing: 1, textShadowColor: 'rgba(124,92,255,0.7)', textShadowRadius: 14, textShadowOffset: { width: 0, height: 0 } },
   best: { fontFamily: FONTS.bodyBold, fontSize: 11, color: COLORS.textDim, letterSpacing: 1.2 },
-  next: { alignItems: 'center', width: 84 },
+  next: { alignItems: 'center', width: 96 },
+  qp: { alignItems: 'center', justifyContent: 'center', borderWidth: 2, backgroundColor: 'rgba(6,8,20,0.45)' },
+  qpCenter: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  qpNum: {
+    fontFamily: FONTS.display, color: '#FFFFFF',
+    textShadowColor: 'rgba(0,0,0,0.95)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 4,
+  },
   meter: { flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 7, borderRadius: 14, backgroundColor: 'rgba(10,12,34,0.6)', borderWidth: 1, borderColor: COLORS.stroke },
   arrow: { color: COLORS.cyan, fontSize: 14, fontFamily: FONTS.bodyBlack },
   arrowStatic: { color: COLORS.textFaint, fontSize: 12 },

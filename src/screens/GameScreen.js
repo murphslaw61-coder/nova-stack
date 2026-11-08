@@ -239,7 +239,7 @@ export default function GameScreen({ launch, onHome, onOpenShop, toast }) {
               <Text style={styles.goalText}>{TIER_NAMES[puzzle.target]}</Text>
             </View>
           </View>
-        ) : <View style={{ width: 84 }} />}
+        ) : <View style={{ width: 96 }} />}
         {puzzle ? (
           <View style={{ flex: 1, alignItems: 'center' }}>
             <T kind="label">Drops left</T>
@@ -355,7 +355,7 @@ const styles = StyleSheet.create({
   weekly: { marginHorizontal: 14, marginBottom: 6, padding: 8, borderRadius: 12, backgroundColor: 'rgba(124,92,255,0.14)', borderWidth: 1, borderColor: 'rgba(124,92,255,0.3)' },
   weeklyText: { color: COLORS.text, fontFamily: FONTS.body, fontSize: 12, textAlign: 'center' },
   hud: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, marginBottom: 6 },
-  goal: { width: 84, alignItems: 'center' },
+  goal: { width: 96, alignItems: 'center' },
   goalText: { color: COLORS.text, fontFamily: FONTS.bodyBlack, fontSize: 12 },
   moves: { fontFamily: FONTS.display, fontSize: 32, color: COLORS.text },
   boardArea: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 10 },
