@@ -1,6 +1,6 @@
 // Sound effects + ambient music via expo-audio. Each effect gets a small
 // player pool so rapid cascades can overlap instead of cutting each other off.
-import { AppState } from 'react-native';
+import { AppState, Platform } from 'react-native';
 import { createAudioPlayer, setAudioModeAsync } from 'expo-audio';
 
 const FILES = {
@@ -59,6 +59,17 @@ export async function initAudio({ sound = true, music: m = true } = {}) {
   } catch (e) {
     // Missing audio hardware should never break the game.
   }
+}
+
+// Browsers block audio until the first user gesture, so (re)start music then.
+if (Platform.OS === 'web' && typeof document !== 'undefined') {
+  const kick = () => {
+    if (musicWanted && musicOn && music) {
+      try { music.play(); } catch (e) {}
+    }
+  };
+  document.addEventListener('pointerdown', kick, { once: true, capture: true });
+  document.addEventListener('keydown', kick, { once: true, capture: true });
 }
 
 AppState.addEventListener('change', (s) => {
