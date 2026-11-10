@@ -8,7 +8,8 @@
 import { Platform } from 'react-native';
 import { CONFIG, isPlaceholder } from '../config';
 import { PRODUCTS, productById, profilePatchForEntitlements } from '../game/products';
-import { updateProfile, grantItems, getProfile } from './profile';
+import { updateProfile } from './profile';
+import { applyPurchase } from './purchaseEffects';
 
 let Purchases = null;
 try {
@@ -86,18 +87,6 @@ export async function loadCatalog() {
   }
   catalog = next;
   return catalog;
-}
-
-function applyPurchase(def) {
-  const p = getProfile();
-  if (def.grant && !(def.id === 'nova_stack_starter_bundle' && p.starterBundleOwned)) grantItems(def.grant);
-  updateProfile((prof) => {
-    let next = prof;
-    if (def.entitlements && def.entitlements.includes('remove_ads')) next = { ...next, adsRemoved: true };
-    if (def.id === 'nova_stack_starter_bundle') next = { ...next, starterBundleOwned: true };
-    if (def.skin && !next.ownedSkins.includes(def.skin)) next = { ...next, ownedSkins: [...next.ownedSkins, def.skin], skin: def.skin };
-    return next;
-  });
 }
 
 // Resolves { success } | { cancelled } | { error }

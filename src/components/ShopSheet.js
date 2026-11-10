@@ -44,7 +44,7 @@ export default function ShopSheet({ visible, onClose, toast }) {
     if (res.success) {
       sfx.unlock();
       haptic.success();
-      toast(`${p.name} unlocked${res.simulated ? ' (test store)' : ''}`);
+      toast(`${p.name} unlocked${res.demo ? ' (demo)' : res.simulated ? ' (test store)' : ''}`);
     } else if (!res.cancelled) {
       toast(res.error || 'Purchase failed');
     }
@@ -86,6 +86,9 @@ export default function ShopSheet({ visible, onClose, toast }) {
     <Sheet visible={visible} onClose={onClose} title="Shop">
       {mode === 'simulated' && (
         <View style={styles.notice}><T kind="dim">Test store: RevenueCat keys aren't set, so purchases are simulated (dev builds only).</T></View>
+      )}
+      {mode === 'demo' && (
+        <View style={styles.notice}><T kind="dim">Demo shop: purchases here are free and only for trying the game out. Real purchases are in the iOS and Android app.</T></View>
       )}
       {mode === 'unavailable' && (
         <View style={styles.notice}><T kind="dim">The store isn't available right now. Check your connection and try again.</T></View>
