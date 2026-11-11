@@ -17,24 +17,28 @@ Release builds never use it.
 
 In RevenueCat → your project → **Test Store**, create three products:
 
-| Product ID | Type | Duration |
-|---|---|---|
-| `monthly` | Subscription | 1 month |
-| `yearly` | Subscription | 1 year |
-| `lifetime` | Non-consumable | — |
+| Product ID | Type | Duration | Price |
+|---|---|---|---|
+| `nova_stack_pro_monthly` | Subscription | 1 month | $2.99 |
+| `nova_stack_pro_yearly` | Subscription | 1 year | $19.99 |
+| `nova_stack_pro_lifetime` | Non-consumable | — | $29.99 |
+
+The six shop items are also in the Test Store, at the prices in `RELEASE.md`, in a
+separate non-current offering called `shop`. Test Store prices can't be edited after
+creation, so to change one, create a new product and swap it into the package.
 
 ## 2. Entitlement
 **Product catalog → Entitlements → + New**: identifier `nova_stack_pro`. Attach
-`monthly`, `yearly` and `lifetime` (and, later, the App Store / Play versions of them).
+the three Pro products (and, later, the App Store / Play versions of them).
 
 ## 3. Offering
 **Product catalog → Offerings**: make an offering `default`, mark it **Current**, and add:
 
 | Package | Product |
 |---|---|
-| `$rc_monthly` (Monthly) | `monthly` |
-| `$rc_annual` (Annual) | `yearly` |
-| `$rc_lifetime` (Lifetime) | `lifetime` |
+| `$rc_monthly` (Monthly) | `nova_stack_pro_monthly` |
+| `$rc_annual` (Annual) | `nova_stack_pro_yearly` |
+| `$rc_lifetime` (Lifetime) | `nova_stack_pro_lifetime` |
 
 ## 4. Paywall
 **Paywalls → + New** on the `default` offering. Pick a template and use the Nova Stack
@@ -53,8 +57,8 @@ cancel, restore, or request a refund (iOS).
 
 ## 6. Going live on the App Store
 1. App Store Connect → your app → **Monetization → Subscriptions**: create a group
-   `Nova Stack Pro` with `nova_stack_pro_monthly` and `nova_stack_pro_yearly`.
-   Under **In-App Purchases**, add the non-consumable `nova_stack_pro_lifetime`.
+   `Nova Stack Pro` with `nova_stack_pro_monthly` ($2.99) and `nova_stack_pro_yearly` ($19.99).
+   Under **In-App Purchases**, add the non-consumable `nova_stack_pro_lifetime` ($29.99).
 2. RevenueCat: add the App Store app (bundle ID `com.novastack.game`) with its
    In-App Purchase Key. Import those three products, attach them to `nova_stack_pro`,
    and add them to the same `default` packages next to the Test Store products.
