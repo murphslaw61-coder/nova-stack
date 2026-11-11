@@ -13,7 +13,6 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.novastack.game",
-      "buildNumber": "1",
       "config": {
         "usesNonExemptEncryption": false
       },
@@ -23,7 +22,6 @@
     },
     "android": {
       "package": "com.novastack.game",
-      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#070A1C"
