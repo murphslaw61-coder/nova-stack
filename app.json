@@ -12,7 +12,7 @@
     ],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.novastack.game",
+      "bundleIdentifier": "com.novastack.planetmerge",
       "config": {
         "usesNonExemptEncryption": false
       },
@@ -21,7 +21,7 @@
       }
     },
     "android": {
-      "package": "com.novastack.game",
+      "package": "com.novastack.planetmerge",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#070A1C"

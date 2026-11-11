@@ -1,6 +1,6 @@
 # iOS setup checklist (App Store Connect)
 
-Bundle ID: **com.novastack.game**. Do these in order. Each step says where it happens.
+Bundle ID: **com.novastack.planetmerge**. Do these in order. Each step says where it happens.
 
 ## 1. Paid Apps agreement (required for in-app purchases)
 App Store Connect → **Business** → sign the **Paid Apps** agreement and add your
@@ -10,7 +10,7 @@ tested or sold.
 ## 2. Register the bundle ID
 developer.apple.com → **Certificates, IDs & Profiles → Identifiers → +** → App IDs → App
 - Description: `Nova Stack`
-- Bundle ID (Explicit): `com.novastack.game`
+- Bundle ID (Explicit): `com.novastack.planetmerge`
 - Capabilities: **In-App Purchase** is on by default; nothing else is needed.
 
 (EAS can also register it automatically on the first `eas build`, but doing it here
@@ -21,7 +21,7 @@ App Store Connect → **Apps → + → New App**
 - Platform: iOS
 - Name: `Nova Stack`. If the name is taken, try `Nova Stack: Planet Merge`.
 - Primary language: English (U.S.)
-- Bundle ID: `com.novastack.game`
+- Bundle ID: `com.novastack.planetmerge`
 - SKU: `novastack-ios-001` (any unique text; players never see it)
 - User access: Full Access
 
@@ -58,7 +58,7 @@ Sandbox Account.
 
 ## 6. Connect RevenueCat to Apple
 RevenueCat → your project → **Apps → + App Store app**
-- Bundle ID: `com.novastack.game`
+- Bundle ID: `com.novastack.planetmerge`
 - **In-App Purchase Key:** App Store Connect → **Users and Access → Integrations →
   In-App Purchase → Generate**. Download the `.p8` file and upload it to RevenueCat with
   its Key ID and Issuer ID.

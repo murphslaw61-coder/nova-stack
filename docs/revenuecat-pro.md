@@ -59,7 +59,7 @@ cancel, restore, or request a refund (iOS).
 1. App Store Connect → your app → **Monetization → Subscriptions**: create a group
    `Nova Stack Pro` with `nova_stack_pro_monthly` ($2.99) and `nova_stack_pro_yearly` ($19.99).
    Under **In-App Purchases**, add the non-consumable `nova_stack_pro_lifetime` ($29.99).
-2. RevenueCat: add the App Store app (bundle ID `com.novastack.game`) with its
+2. RevenueCat: add the App Store app (bundle ID `com.novastack.planetmerge`) with its
    In-App Purchase Key. Import those three products, attach them to `nova_stack_pro`,
    and add them to the same `default` packages next to the Test Store products.
 3. Copy the App Store app's public key (`appl_…`) into
