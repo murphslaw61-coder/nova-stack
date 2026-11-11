@@ -1,6 +1,7 @@
 # Releasing Nova Stack
 
 Work top to bottom. `npm run preflight` checks the config steps for you.
+For iOS, `docs/ios-setup.md` has every App Store Connect field filled in.
 
 ## 0. Accounts you need
 - Apple Developer Program ($99/yr) and Google Play Console ($25 one-time)
