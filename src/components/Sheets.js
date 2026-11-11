@@ -8,7 +8,7 @@ import { ACHIEVEMENTS } from '../game/achievements';
 import PUZZLES from '../game/puzzles.json';
 import { useProfile, setSetting } from '../services/profile';
 import { showPrivacyOptions, useAdsStatus } from '../services/ads';
-import { restorePurchases } from '../services/iap';
+import { restorePurchases, presentCustomerCenter } from '../services/iap';
 import { setSoundEnabled, setMusicEnabled } from '../services/audio';
 import { setHapticsEnabled } from '../services/haptics';
 import { CONFIG, isPlaceholder } from '../config';
@@ -27,6 +27,9 @@ export function SettingsSheet({ visible, onClose, onHowTo, toast }) {
       <Toggle label="Show tier numbers on planets" value={s.tierNumbers} onChange={(v) => setSetting('tierNumbers', v)} />
       <View style={{ gap: 8, marginTop: 16 }}>
         <GhostButton label="How to play" icon="?" onPress={onHowTo} />
+        {p.isPro && (
+          <GhostButton label="Manage subscription" icon="✦" onPress={async () => { const r = await presentCustomerCenter(); if (r.error) toast(r.error); }} />
+        )}
         <GhostButton label="Restore purchases" icon="↺" onPress={async () => { const r = await restorePurchases(); toast(r.success ? 'Purchases restored' : r.error); }} />
         {ads.privacyOptionsRequired && <GhostButton label="Privacy & ad choices" icon="⚙" onPress={showPrivacyOptions} />}
         {!isPlaceholder(CONFIG.links.privacyPolicy) && (

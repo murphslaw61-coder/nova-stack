@@ -25,6 +25,9 @@ import { initAudio, startMusic } from './src/services/audio';
 import { setHapticsEnabled } from './src/services/haptics';
 import { initAds } from './src/services/ads';
 import { configurePurchases, syncEntitlements } from './src/services/iap';
+import { grantItems } from './src/services/profile';
+import { dateKey } from './src/game/engine';
+import { AppState } from 'react-native';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
@@ -62,6 +65,23 @@ function Root() {
   const pendingLaunch = useRef(null);
 
   const toast = useCallback((msg) => setToastState((t) => ({ msg, nonce: t.nonce + 1 })), []);
+
+  // Pro daily bonus: +1 of every power-up once per calendar day.
+  useEffect(() => {
+    if (!ready || !profile.isPro) return;
+    const today = dateKey();
+    if (profile.lastProBonusDate === today) return;
+    updateProfile((p) => ({ ...p, lastProBonusDate: today }));
+    grantItems({ bomb: 1, shuffle: 1, lock: 1, flip: 1 });
+    setTimeout(() => toast('Pro daily bonus: +1 of every power-up'), 800);
+  }, [ready, profile.isPro, profile.lastProBonusDate]);
+
+  // Re-check entitlements when the app returns to the foreground (renewals,
+  // cancellations, purchases made on another device).
+  useEffect(() => {
+    const sub = AppState.addEventListener('change', (s) => { if (s === 'active') syncEntitlements(); });
+    return () => sub.remove();
+  }, []);
 
   const refreshSavedRun = useCallback(async () => {
     const json = await loadRun();

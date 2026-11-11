@@ -7,6 +7,7 @@ import AdBanner from '../components/AdBanner';
 import { Button, IconButton, T, formatScore } from '../components/ui';
 import { COLORS, FONTS, MODE_META } from '../game/constants';
 import { ACHIEVEMENTS } from '../game/achievements';
+import { hasNoAds } from '../game/products';
 import { dateKey, weeklyModifierFor } from '../game/engine';
 import { useProfile } from '../services/profile';
 import { haptic } from '../services/haptics';
@@ -136,7 +137,7 @@ export default function HomeScreen({ savedRun, onPlay, onShop, onSettings, onAch
           })}
         </Animated.View>
       </ScrollView>
-      {!p.adsRemoved && <View style={{ paddingBottom: insets.bottom }}><AdBanner /></View>}
+      {!hasNoAds(p) && <View style={{ paddingBottom: insets.bottom }}><AdBanner /></View>}
     </View>
   );
 }

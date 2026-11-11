@@ -37,6 +37,9 @@ Prices shown in the app always come from the store (localized), so change them f
 4. **Offerings:** make a `default` offering marked *current*, with one package per product (custom package identifiers are fine). Products not in an offering still work through a fallback, but offerings let you run price experiments.
 5. **API keys:** copy the public SDK keys (`appl_…`, `goog_…`) into `src/config.js → revenueCat`.
 
+## 3b. Nova Stack Pro (subscription)
+See `docs/revenuecat-pro.md`: the `nova_stack_pro` entitlement, monthly / yearly / lifetime products, the `default` offering, the Paywall and the Customer Center.
+
 ## 4. AdMob
 1. Create **two apps** (iOS and Android). Put their App IDs (`ca-app-pub-…~…`) into `app.json` under the `react-native-google-mobile-ads` plugin, replacing Google's sample IDs.
 2. Create three ad units per app (**Banner**, **Interstitial**, **Rewarded**) and paste the six unit IDs into `src/config.js → admob`.

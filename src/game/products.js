@@ -37,6 +37,15 @@ export const PRODUCTS = [
 ];
 export const productById = (id) => PRODUCTS.find((p) => p.id === id);
 
+// Nova Stack Pro: a subscription (Monthly / Yearly) or Lifetime purchase that
+// grants this entitlement. Configured in RevenueCat as the "default" offering.
+export const PRO_ENTITLEMENT = 'nova_stack_pro';
+export const PRO_PERKS = ['No ads, ever', 'Every planet skin', '+1 of every power-up each day'];
+
+// Effective perks: one-time purchases never expire; Pro lasts while active.
+export const hasNoAds = (p) => !!(p.adsRemoved || p.isPro);
+export const hasSkin = (p, id) => id === 'cosmic' || p.ownedSkins.includes(id) || !!p.isPro;
+
 // Map RevenueCat entitlement ids → profile changes.
 export function profilePatchForEntitlements(profile, active) {
   let p = profile;

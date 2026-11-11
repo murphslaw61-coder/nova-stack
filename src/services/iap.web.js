@@ -4,10 +4,24 @@
 // whole shop flow can be tried in a browser.
 import { PRODUCTS, productById } from '../game/products';
 import { applyPurchase } from './purchaseEffects';
-import { getProfile } from './profile';
+import { getProfile, updateProfile } from './profile';
 
 export function configurePurchases() {}
 export const storeMode = () => 'demo';
+export const paywallAvailable = () => true;
+export async function getCustomerInfo() { return null; }
+
+// Demo Pro: unlocks for free in this browser so the perks can be tried out.
+export async function presentProPaywall() {
+  const p = getProfile();
+  if (p.isPro) return { result: 'already_pro' };
+  await new Promise((r) => setTimeout(r, 450));
+  updateProfile((x) => ({ ...x, isPro: true, proExpires: null, proWillRenew: false }));
+  return { result: 'purchased', demo: true };
+}
+export async function presentCustomerCenter() {
+  return { error: 'Subscriptions are managed in the iOS and Android app.' };
+}
 export async function syncEntitlements() { return []; }
 
 export async function loadCatalog() {

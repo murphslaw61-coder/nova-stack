@@ -4,9 +4,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Sheet, T, GhostButton } from './ui';
 import Planet from './Planet';
 import { COLORS, FONTS } from '../game/constants';
-import { PRODUCTS } from '../game/products';
+import { PRODUCTS, PRO_PERKS, hasNoAds, hasSkin } from '../game/products';
 import { SKINS, SKIN_ORDER } from '../game/skins';
-import { loadCatalog, purchase, restorePurchases, storeMode } from '../services/iap';
+import { loadCatalog, purchase, restorePurchases, storeMode, presentProPaywall, presentCustomerCenter } from '../services/iap';
 import { showRewardedAd, useAdsStatus } from '../services/ads';
 import { useProfile, updateProfile, grantItems } from '../services/profile';
 import { CONFIG, isPlaceholder } from '../config';
@@ -35,6 +35,26 @@ export default function ShopSheet({ visible, onClose, toast }) {
   const mode = storeMode();
   const today = dateKey();
   const freeUsed = profile.freeRewardDate === today ? profile.freeRewardCount || 0 : 0;
+
+  const goPro = async () => {
+    if (busy) return;
+    setBusy('pro');
+    const res = await presentProPaywall();
+    setBusy(null);
+    if (res.result === 'purchased' || res.result === 'restored') {
+      sfx.unlock();
+      haptic.success();
+      toast(res.result === 'restored' ? 'Nova Stack Pro restored' : `Welcome to Nova Stack Pro${res.demo ? ' (demo)' : ''}!`);
+    } else if (res.result === 'already_pro') {
+      toast('You already have Nova Stack Pro');
+    } else if (res.result === 'error') {
+      toast(res.error);
+    }
+  };
+  const manage = async () => {
+    const res = await presentCustomerCenter();
+    if (res.error) toast(res.error);
+  };
 
   const buy = async (p) => {
     if (busy) return;
@@ -75,18 +95,23 @@ export default function ShopSheet({ visible, onClose, toast }) {
 
   const priceFor = (p) => (catalog && catalog[p.id] ? catalog[p.id].priceString : null);
   const owned = (p) =>
-    (p.id === 'nova_stack_remove_ads' && profile.adsRemoved) ||
+    (p.id === 'nova_stack_remove_ads' && hasNoAds(profile)) ||
     (p.id === 'nova_stack_starter_bundle' && profile.starterBundleOwned) ||
-    (p.skin && profile.ownedSkins.includes(p.skin));
+    (p.skin && hasSkin(profile, p.skin));
 
   const starter = PRODUCTS.find((p) => p.featured);
-  const showStarter = !profile.starterBundleOwned && !profile.adsRemoved;
+  const showStarter = !profile.starterBundleOwned && !hasNoAds(profile);
 
   return (
     <Sheet visible={visible} onClose={onClose} title="Shop">
       {mode === 'simulated' && (
         <View style={styles.notice}><T kind="dim">Test store: RevenueCat keys aren't set, so purchases are simulated (dev builds only).</T></View>
       )}
+      {mode === 'test' && (
+        <View style={styles.notice}><T kind="dim">RevenueCat Test Store: purchases go through RevenueCat but nobody is charged (development builds only).</T></View>
+      )}
+      <ProCard profile={profile} busy={busy === 'pro'} onGoPro={goPro} onManage={manage} />
+
       {mode === 'demo' && (
         <View style={styles.notice}><T kind="dim">Demo shop: purchases here are free and only for trying the game out. Real purchases are in the iOS and Android app.</T></View>
       )}
@@ -138,7 +163,7 @@ export default function ShopSheet({ visible, onClose, toast }) {
         {SKIN_ORDER.map((sid) => {
           const s = SKINS[sid];
           const product = PRODUCTS.find((p) => p.skin === sid);
-          const has = profile.ownedSkins.includes(sid);
+          const has = hasSkin(profile, sid);
           const equipped = profile.skin === sid;
           const label = equipped ? 'Equipped' : has ? 'Equip' : (product && priceFor(product)) || '—';
           return (
@@ -176,6 +201,38 @@ export default function ShopSheet({ visible, onClose, toast }) {
   );
 }
 
+function ProCard({ profile, busy, onGoPro, onManage }) {
+  const pro = !!profile.isPro;
+  const renew = profile.proExpires
+    ? `${profile.proWillRenew ? 'Renews' : 'Ends'} ${new Date(profile.proExpires).toLocaleDateString()}`
+    : 'Lifetime';
+  return (
+    <LinearGradient colors={pro ? ['#0E3B3A', '#123A5C'] : ['#2B1E6E', '#5B2A8F']} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.pro}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', gap: 12 }}>
+        <Planet tier={7} size={56} />
+        <View style={{ flex: 1 }}>
+          <Text style={styles.proTitle}>NOVA STACK PRO</Text>
+          <Text style={styles.proSub}>{pro ? `Active · ${renew}` : 'Monthly, yearly or lifetime'}</Text>
+        </View>
+      </View>
+      <View style={{ marginTop: 10, gap: 4 }}>
+        {PRO_PERKS.map((perk) => (
+          <Text key={perk} style={styles.proPerk}>{pro ? '✓' : '✦'}  {perk}</Text>
+        ))}
+      </View>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={pro ? 'Manage subscription' : 'See Nova Stack Pro plans'}
+        onPress={pro ? onManage : onGoPro}
+        disabled={busy}
+        style={({ pressed }) => [styles.proBtn, pro && styles.proBtnManage, pressed && { transform: [{ scale: 0.97 }] }]}
+      >
+        {busy ? <ActivityIndicator color="#2B1E6E" /> : <Text style={[styles.proBtnText, pro && { color: COLORS.text }]}>{pro ? 'Manage subscription' : 'See plans'}</Text>}
+      </Pressable>
+    </LinearGradient>
+  );
+}
+
 function Row({ icon, iconColor, name, desc, action, onPress, disabled, busy, owned, badge }) {
   return (
     <View style={styles.row}>
@@ -203,6 +260,13 @@ function Row({ icon, iconColor, name, desc, action, onPress, disabled, busy, own
 const styles = StyleSheet.create({
   notice: { backgroundColor: 'rgba(255,207,90,0.1)', borderRadius: 12, padding: 10, marginBottom: 10, borderWidth: 1, borderColor: 'rgba(255,207,90,0.25)' },
   section: { marginTop: 16, marginBottom: 8 },
+  pro: { borderRadius: 20, padding: 14, marginBottom: 14, borderWidth: 1, borderColor: 'rgba(255,255,255,0.18)' },
+  proTitle: { fontFamily: FONTS.display, fontSize: 17, color: '#fff', letterSpacing: 1.5 },
+  proSub: { fontFamily: FONTS.bodyBold, fontSize: 12.5, color: 'rgba(255,255,255,0.8)', marginTop: 2 },
+  proPerk: { fontFamily: FONTS.bodyBold, fontSize: 13, color: '#fff' },
+  proBtn: { marginTop: 12, backgroundColor: COLORS.gold, borderRadius: 12, paddingVertical: 11, alignItems: 'center' },
+  proBtnManage: { backgroundColor: 'rgba(255,255,255,0.12)' },
+  proBtnText: { fontFamily: FONTS.display, fontSize: 14, color: '#2B1E6E', letterSpacing: 1 },
   featured: { borderRadius: 20, padding: 14, overflow: 'hidden' },
   featuredBadge: { position: 'absolute', top: 10, right: 10, backgroundColor: '#FFE14D', borderRadius: 8, paddingHorizontal: 8, paddingVertical: 3 },
   featuredBadgeText: { fontFamily: FONTS.bodyBlack, fontSize: 10, color: '#3A1A00', letterSpacing: 1 },

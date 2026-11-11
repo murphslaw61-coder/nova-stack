@@ -14,6 +14,7 @@ import * as E from '../game/engine';
 import { COLORS, FONTS, POWERUPS, TIER_NAMES, modeMeta } from '../game/constants';
 import { newlyUnlocked, ACHIEVEMENTS } from '../game/achievements';
 import PUZZLES from '../game/puzzles.json';
+import { hasNoAds } from '../game/products';
 import { useProfile, getProfile, updateProfile, consumePowerup, grantItems, saveRun } from '../services/profile';
 import { showRewardedAd, maybeShowInterstitial, useAdsStatus } from '../services/ads';
 import { sfx } from '../services/audio';
@@ -186,7 +187,7 @@ export default function GameScreen({ launch, onHome, onOpenShop, toast }) {
 
   // ---- run end flow ----
   const afterRun = async (next) => {
-    await maybeShowInterstitial({ adsRemoved: getProfile().adsRemoved, runsCompleted: getProfile().runsCompleted });
+    await maybeShowInterstitial({ adsRemoved: hasNoAds(getProfile()), runsCompleted: getProfile().runsCompleted });
     next();
   };
   const restart = () => afterRun(() => begin({ mode: s.mode, puzzle: s.puzzle }));
@@ -290,7 +291,7 @@ export default function GameScreen({ launch, onHome, onOpenShop, toast }) {
         )}
       </Animated.View>
 
-      <View style={{ paddingHorizontal: 14, paddingTop: 12, paddingBottom: profile.adsRemoved ? insets.bottom + 10 : 10 }}>
+      <View style={{ paddingHorizontal: 14, paddingTop: 12, paddingBottom: hasNoAds(profile) ? insets.bottom + 10 : 10 }}>
         {powerupsOn ? (
           <PowerBar counts={profile.powerups} onPress={onPower} armed={armed} disabledKinds={disabledKinds} rewardedReady={ads.rewardedReady} />
         ) : (
@@ -312,7 +313,7 @@ export default function GameScreen({ launch, onHome, onOpenShop, toast }) {
           )
         )}
       </View>
-      {!profile.adsRemoved && <View style={{ paddingBottom: insets.bottom }}><AdBanner /></View>}
+      {!hasNoAds(profile) && <View style={{ paddingBottom: insets.bottom }}><AdBanner /></View>}
 
       <ScreenFx ref={screenFxRef} />
 

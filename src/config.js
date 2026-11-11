@@ -10,6 +10,11 @@ export const CONFIG = {
   revenueCat: {
     iosApiKey: 'appl_REPLACE_ME',
     androidApiKey: 'goog_REPLACE_ME',
+    // RevenueCat Test Store key: real RevenueCat purchase flow (paywall,
+    // entitlements, Customer Center) with no App Store / Play setup and no
+    // charges. Used only in development builds; release builds always use the
+    // platform keys above. Never ship it in a store build.
+    testStoreApiKey: 'test_MXgAYhjPZAnlsDnLKzdJJYAvOQw',
   },
 
   // AdMob → Apps → Ad units. One of each format per platform.
