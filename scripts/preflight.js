@@ -25,7 +25,7 @@ check(placeholders.length === 0, 'src/config.js has no placeholders', `src/confi
 check(!/appl_REPLACE|goog_REPLACE/.test(cfg), 'RevenueCat keys set', 'src/config.js → revenueCat API keys');
 
 const eas = read('eas.json');
-check(!/REPLACE_WITH/.test(eas), 'eas.json submit config set', 'eas.json → submit.production (Apple ID / ASC app id / team id)');
+check(!/REPLACE_WITH/.test(eas), 'eas.json has no placeholders', 'eas.json still has REPLACE_WITH placeholders');
 
 console.log('\nNova Stack release preflight\n');
 ok.forEach((m) => console.log('  ✓ ' + m));
