@@ -8,7 +8,7 @@ import { Platform } from 'react-native';
 export const CONFIG = {
   // RevenueCat → Project settings → API keys (public SDK keys, safe to ship).
   revenueCat: {
-    iosApiKey: 'appl_REPLACE_ME',
+    iosApiKey: 'appl_qASzHriCSCvTDTcUuSojsQGbGbQ',
     androidApiKey: 'goog_REPLACE_ME',
     // RevenueCat Test Store key: real RevenueCat purchase flow (paywall,
     // entitlements, Customer Center) with no App Store / Play setup and no
