@@ -20,9 +20,9 @@ export const CONFIG = {
   // AdMob → Apps → Ad units. One of each format per platform.
   admob: {
     ios: {
-      banner: 'ca-app-pub-REPLACE_ME/IOS_BANNER',
-      interstitial: 'ca-app-pub-REPLACE_ME/IOS_INTERSTITIAL',
-      rewarded: 'ca-app-pub-REPLACE_ME/IOS_REWARDED',
+      banner: 'ca-app-pub-3826443332909957/7810080866',
+      interstitial: 'ca-app-pub-3826443332909957/6106116956',
+      rewarded: 'ca-app-pub-3826443332909957/1840403038',
     },
     android: {
       banner: 'ca-app-pub-3826443332909957/1907851643',
