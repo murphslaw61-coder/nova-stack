@@ -39,9 +39,9 @@ export const CONFIG = {
   },
 
   links: {
-    privacyPolicy: 'https://REPLACE_ME/nova-stack/privacy',
+    privacyPolicy: 'https://legendary-dolphin-c17f60.netlify.app/',
     termsOfUse: 'https://www.apple.com/legal/internet-services/itunes/dev/stdeula/',
-    support: 'mailto:REPLACE_ME@example.com',
+    support: 'mailto:murphslaw61@gmail.com',
     // Added to share text once the app is live (leave '' until then).
     storeUrl: Platform.select({ ios: '', android: '', default: '' }),
   },
