@@ -71,7 +71,7 @@
         "react-native-google-mobile-ads",
         {
           "androidAppId": "ca-app-pub-3940256099942544~3347511713",
-          "iosAppId": "ca-app-pub-3940256099942544~1458002511",
+          "iosAppId": "ca-app-pub-3826443332909957~6422966676",
           "delayAppMeasurementInit": true,
           "userTrackingUsageDescription": "Allow tracking so Nova Stack can show ads that are more relevant to you. Ads keep the game free.",
           "skAdNetworkItems": [
